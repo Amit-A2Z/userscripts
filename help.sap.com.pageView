@@ -1,0 +1,41 @@
+// ==UserScript==
+// @name         help.sap.com pageView
+// @namespace    http://tampermonkey.net/
+// @version      0.1
+// @description  try to take over the world!
+// @author       You
+// @match        https://help.sap.com/docs/*
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=sap.com
+// @grant        none
+// ==/UserScript==
+window.addEventListener('load', function() {
+    'use strict';
+    // Your code here...
+    try {
+        let zToggle = document.getElementsByClassName("toggle-rw");
+        for (var i = 0; i < zToggle.length; i++) {
+            zToggle[i].click();
+        }
+    } catch{};
+    try {
+        // JavaScript file
+        function clickElement() {
+            const elements = document.querySelectorAll('.codeblock-button.toggle-dark-mode');
+
+            if (elements.length > 0) {
+                elements[0].click();
+            } else {
+                setTimeout(clickElement, 2000); // Retry after 2 second
+            }
+        }
+        clickElement();
+    } catch{};
+
+    try {
+        // Remove element with id "footer"
+        var footer = document.getElementById("footer");
+        if (footer) {
+            footer.remove();
+        }
+    } catch{};
+});
