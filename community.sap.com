@@ -42,7 +42,7 @@ window.addEventListener('load', function() {
     //document.querySelectorAll('div.li-common-non-bindable').forEach(el => el.remove());
     //document.querySelectorAll('div.lia-quilt-layout-two-column-main-side').forEach(el => el.remove());
     // Remove "div.lia-quilt-layout-one-column" class from all divs
-    document.querySelectorAll('div.lia-quilt-column-16').forEach(el => el.classList.remove('div.lia-quilt-column-16'));
+    //document.querySelectorAll('div.lia-quilt-column-16').forEach(el => el.classList.remove('div.lia-quilt-column-16'));
     //document.querySelectorAll('div.lia-quilt-row-main').forEach(el => el.classList.remove('div.lia-quilt-row-main'));
     document.querySelectorAll('div.lia-quilt-layout-one-column').forEach(el => el.classList.remove('div.lia-quilt-layout-one-column'));
     document.querySelectorAll('div.lia-quilt-layout-one-column').forEach(el => el.classList.remove('div.lia-quilt-layout-two-column-main-side'));
@@ -54,6 +54,10 @@ window.addEventListener('load', function() {
     document.querySelectorAll('div.lia-CommentEditor-form').forEach(el => el.remove());
     document.querySelectorAll('div.lia-quilt-column-side-content').forEach(el => el.remove());
     document.querySelectorAll('div.lia-discussion-page-sub-section-header').forEach(el => el.remove());
+    document.querySelectorAll('div.lia-quilt-column-16').forEach(function(el) {
+        el.classList.remove('lia-quilt-column-16');
+        el.classList.add('lia-quilt-column-24');
+    });
     // Function to recursively remove &nbsp; from all text nodes
     function removeNbsp(node) {
         if (node.nodeType === 3) { // Node.TEXT_NODE
