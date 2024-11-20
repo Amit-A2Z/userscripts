@@ -1,0 +1,68 @@
+// ==UserScript==
+// @name         watch teachable videos new tab
+// @namespace    http://tampermonkey.net/
+// @version      2024-11-20
+// @description  WATCH videos in new tab. Link will be console. click the link and watch in another tab for better viewving and keeping the current tab for next video scroll
+// @author       Amit-A2Z
+// @match        https://*.teachable.com/*
+// @icon         https://www.google.com/s2/favicons?sz=64&domain=teachable.com
+// @grant        none
+// ==/UserScript==
+
+(function() {
+    'use strict';
+
+    function processIframe(iframe) {
+        if (iframe.dataset.processed) {
+            return; // Skip if already processed
+        }
+        iframe.dataset.processed = 'true'; // Mark as processed
+
+        // Log the iframe src to the console
+        console.log(iframe.src);
+
+        // Create a link element
+        var link = document.createElement('a');
+        link.href = iframe.src;
+        link.target = '_blank';
+        link.textContent = 'Open in new tab';
+        link.style.display = 'block'; // Ensure the link appears on a new line
+        link.style.marginBottom = '10px'; // Optional: Add some space between the link and iframe
+
+        // Insert the link before the iframe to ensure it remains visible
+        iframe.parentNode.insertBefore(link, iframe);
+        // Ensure the iframe doesn't cover the link
+        iframe.style.position = 'relative';
+        iframe.style.zIndex = '1';
+
+        link.style.position = 'relative';
+        link.style.zIndex = '2';
+    }
+
+    function processExistingIframes() {
+        var iframes = document.querySelectorAll('iframe[src^="https://player.hotmart.com/embed/"]');
+        iframes.forEach(processIframe);
+    }
+
+    // Process existing iframes when the script loads
+    processExistingIframes();
+
+    // Observe the document for dynamically added iframes
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            mutation.addedNodes.forEach(function(node) {
+                // If the added node is an iframe
+                if (node.tagName === 'IFRAME' && node.src && node.src.startsWith('https://player.hotmart.com/embed/')) {
+                    processIframe(node);
+                }
+                // If the added node contains iframes
+                else if (node.querySelectorAll) {
+                    var nestedIframes = node.querySelectorAll('iframe[src^="https://player.hotmart.com/embed/"]');
+                    nestedIframes.forEach(processIframe);
+                }
+            });
+        });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+})();
